@@ -26,5 +26,5 @@ Route::middleware(['auth.jwt'])->group(function() {
     Route::apiResource('users', 'UserController')->only('index');
     Route::apiResource('enemies', 'EnemyController')->only('show');
     Route::apiResource('actions', 'ActionController')->only('store');
-    Route::apiResource('games', 'GameController')->only(['store', 'show', 'index']);
+    Route::apiResource('games', 'GameController')->only(['store', 'show', 'index', 'update']);
 });

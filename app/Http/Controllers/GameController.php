@@ -15,7 +15,7 @@ class GameController extends Controller
      */
     public function index(): JsonResponse
     {
-        $games = Game::whereUserId(auth()->user()->id)->get()->toArray();
+        $games = Game::with(['user', 'enemy'])->whereUserId(auth()->user()->id)->get()->toArray();
         $response = $this->setResponse(true, 'User games', $games);
 
         return response()->json($response);
@@ -28,7 +28,7 @@ class GameController extends Controller
      */
     public function show(Game $game): JsonResponse
     {
-        $game = Game::with(['actions'])->find($game->id);
+        $game = Game::with(['actions', 'user', 'enemy'])->find($game->id);
         $response = $this->setResponse(true, 'Game Info', $game->toArray());
 
         return response()->json($response);
@@ -44,13 +44,29 @@ class GameController extends Controller
         $enemy = EnemyFactory::makeEnemy();
         $user = auth()->user();
         $game = new Game();
-        $game->name = $request->name;
+        $game->name = rand(100000, 999999);
         $game->user()->associate($user);
         $game->enemy()->associate($enemy->getEnemy());
         $game->save();
 
         $response = $this->setResponse(true, 'Game created', $game->toArray());
         
+        return response()->json($response);
+    }
+
+    /**
+     * @param Game $game
+     * @param Request $request
+     * 
+     * @return JsonResponse
+     */
+    public function update(Game $game, Request $request): JsonResponse
+    {
+        $game->result = $request->result;
+        $game->save();
+
+        $response = $this->setResponse(true, 'Game Updated', $game->toArray());
+
         return response()->json($response);
     }
 }
