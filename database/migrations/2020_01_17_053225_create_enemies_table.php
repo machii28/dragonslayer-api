@@ -19,7 +19,7 @@ class CreateEnemiesTable extends Migration
             $table->longText('description');
             $table->integer('life')->default(0);
             $table->integer('damage')->default(0);
-            $table->json('moves');
+            $table->json('moves')->nullable();
             $table->timestamps();
         });
     }
