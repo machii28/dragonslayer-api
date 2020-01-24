@@ -17,8 +17,8 @@ class CreateEnemiesTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->longText('description');
-            $table->integer('life');
-            $table->integer('damage');
+            $table->integer('life')->default(0);
+            $table->integer('damage')->default(0);
             $table->json('moves');
             $table->timestamps();
         });
